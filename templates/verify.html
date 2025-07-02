@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SecureReceipt - Verification</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { color: #2c3e50; }
+    .valid { color: green; font-weight: bold; font-size: 20px; }
+    .invalid { color: red; font-weight: bold; font-size: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background: #eee; }
+    .section { margin-top: 30px; }
+    .hash, .signature { font-family: monospace; font-size: 14px; background: #eee; padding: 10px; word-wrap: break-word; }
+  </style>
+</head>
+<body>
+
+  <h1>🔎 Receipt Verification</h1>
+
+  <p><strong>Receipt ID:</strong> {{ receipt.receipt_id }}</p>
+  <p><strong>Store ID:</strong> {{ receipt.store_id }}</p>
+  <p><strong>Total Amount:</strong> ₹{{ receipt.total_amount }}</p>
+  <p><strong>Timestamp:</strong> {{ receipt.timestamp }}</p>
+
+  <div class="section">
+    <h2>🛍️ Items Purchased</h2>
+    <table>
+      <tr>
+        <th>Name</th><th>Quantity</th><th>Price</th><th>Subtotal</th>
+      </tr>
+      {% for item in receipt["items"] %}
+      <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>₹{{ item.price }}</td>
+        <td>₹{{ item.quantity * item.price }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>🔐 Signature & Hash</h2>
+    <p><strong>Digital Signature:</strong></p>
+    <div class="signature">{{ receipt.signature }}</div>
+
+    <p><strong>Blockchain Hash:</strong></p>
+    <div class="hash">{{ receipt.hash }}</div>
+  </div>
+
+  <div class="section">
+    <h2>📊 Verification Result</h2>
+    {% if is_valid %}
+      <p class="valid">✅ This receipt is <strong>valid</strong> and <strong>unaltered</strong>.</p>
+    {% else %}
+      <p class="invalid">❌ This receipt is <strong>NOT valid</strong> or has been <strong>tampered with</strong>.</p>
+    {% endif %}
+  </div>
+
+</body>
+</html>
+

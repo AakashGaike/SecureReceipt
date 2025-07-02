@@ -1,0 +1,25 @@
+{
+  "receipt_id": "TXN1017",
+  "store_id": "WMT001",
+  "items": [
+    {
+      "name": "Milk",
+      "quantity": 2,
+      "price": 2.0
+    },
+    {
+      "name": "Bread",
+      "quantity": 1,
+      "price": 1.0
+    },
+    {
+      "name": "AAkash",
+      "quantity": 1,
+      "price": 101
+    }
+  ],
+  "total_amount": 106,
+  "timestamp": "2025-06-28T20:00:00Z",
+  "hash": "db9024f967283ed9e743db5006a81623b560d90eba8f3b12134b98eb1383280f",
+  "signature": "71e5d408365edd709ccdc6cab8fcb35a4eebc0d6b5a58f302471cdf3388e3e254ed896d7dfbef977eb3de9a730d7e0cb01e8185e3b6002e0a40bff2cdc5114aa98be07ce853650e7433d3d8e728c95b719cd893db371047d37a7c4af099a260f85f06da8cce2f2fae1a27f8274802a885ec1e696285f611dfd70d3f24b7729b71440d4f19cc78cd4f17068b660ef61322ff0a340657d552735a406362ab59996b01217b8640b5113bb0dfe1127f73938eafce627b1bdcb61c354add2518c5815a66a342c3fd62e1c7d16af8e6e869345622262edf2bcc2aa758a01fb2df203fe472824028cecdb33e79e092d074921e6936fc0a0d86d029f6a8d28f32f47e600"
+}

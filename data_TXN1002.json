@@ -1,0 +1,24 @@
+{
+  "receipt_id": "TXN1002",
+  "store_id": "WMT001",
+  "items": [
+    {
+      "name": "Milk",
+      "quantity": 2,
+      "price": 2.5
+    },
+    {
+      "name": "Bread",
+      "quantity": 1,
+      "price": 1.8
+    },
+    {
+      "name": "Eggs",
+      "quantity": 1,
+      "price": 3.2
+    }
+  ],
+  "total_amount": 10.0,
+  "timestamp": "2025-06-28T20:00:00Z",
+  "hash": "d4f4f8832ac9f1d48fbd0a741ae7e5bc439e3de9ac05bc35a8e5078fe82d80ad"
+}
