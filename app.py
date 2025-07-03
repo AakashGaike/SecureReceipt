@@ -33,10 +33,6 @@ def sign_receipt(data: dict) -> str:
     h = SHA256.new(msg.encode())
     signature = pkcs1_15.new(PRIVATE_KEY).sign(h)
     return signature.hex()
-
-# --------------------------------------
-# Helper: Verify signature
-# --------------------------------------
 def verify_signature(data: dict, signature_hex: str) -> bool:
     try:
         msg = f"{data['receipt_id']}{data['total_amount']}{data['timestamp']}{data['store_id']}"
@@ -49,9 +45,50 @@ def verify_signature(data: dict, signature_hex: str) -> bool:
         return False
 
 # --------------------------------------
+@app.route('/generate', methods=['GET', 'POST'])
+def generate_from_form():
+    if request.method == 'POST':
+        receipt_id = request.form['receipt_id']
+        store_id = request.form['store_id']
+        timestamp = request.form['timestamp']
+        total_amount = float(request.form['total_amount'])
+
+        # Collect items
+        item_names = request.form.getlist('item_name[]')
+        item_quantities = request.form.getlist('item_quantity[]')
+        item_prices = request.form.getlist('item_price[]')
+
+        items = []
+        for name, qty, price in zip(item_names, item_quantities, item_prices):
+            items.append({
+                "name": name,
+                "quantity": int(qty),
+                "price": float(price)
+            })
+
+        receipt_data = {
+            "receipt_id": receipt_id,
+            "store_id": store_id,
+            "items": items,
+            "total_amount": total_amount,
+            "timestamp": timestamp
+        }
+
+        # Reuse your existing receipt generation logic
+        response = app.test_client().post('/generate-receipt', json=receipt_data)
+        if response.status_code == 201:
+            data = response.get_json()
+            return render_template("success.html", result=data)
+        else:
+            return jsonify(response.get_json()), 400
+
+    return render_template("generate.html")
+
+# --------------------------------------
+
 @app.route('/')
 def index():
-    return "Welcome to SecureReceipt API"
+    return render_template("index.html")
 
 # --------------------------------------
 @app.route('/generate-receipt', methods=['POST'])
