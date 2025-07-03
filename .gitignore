@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+*.env
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# OS/System
+.DS_Store
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Secrets
+keys/
+data_*.json
+static/qr/*.png
