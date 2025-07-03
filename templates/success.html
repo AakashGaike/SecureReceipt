@@ -1,0 +1,19 @@
+<!-- templates/success.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Receipt Generated</title>
+</head>
+<body>
+  <h1>Receipt Created Successfully ✅</h1>
+  <p>Receipt ID: {{ result.receipt_id }}</p>
+  <p>Receipt Hash: {{ result.receipt_hash }}</p>
+  <p>Block Index: {{ result.block_index }}</p>
+
+  <h3>QR Code:</h3>
+  <img src="{{ url_for('static', filename=result.qr_code.split('static/')[1]) }}" width="200">
+
+  <p><a href="/">Back to Home</a></p>
+</body>
+</html>
