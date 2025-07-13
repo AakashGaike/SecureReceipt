@@ -1,0 +1,20 @@
+{
+  "receipt_id": "TX2020",
+  "store_id": "Walmart1",
+  "items": [
+    {
+      "name": "Bread",
+      "quantity": 1,
+      "price": 50
+    },
+    {
+      "name": "Eggs",
+      "quantity": 2,
+      "price": 25
+    }
+  ],
+  "total_amount": 100,
+  "timestamp": "2025-07-13T21:51",
+  "hash": "cb732b3f136d8dee4210b4a399f006e7548a6f7fac32f1576db19465a578191b",
+  "signature": "5cf27afb55ffc993b384e0c48802aa28a4d392a6dc01c19b2d5227ebcad2ba29fa26c9a01656f4916bbc56760d4db2f4ba9403f3666c301e5eb7753669a5f1f742c72c4c843703041f506c6aa56006e6c0eb0c488d8e18da16dc902e6311b3c44a85b2827c89dec11e5a5ee9d1de29a220c41bee399e9d4cebbec91d76aba2eca68de9739331237d838676c7dc1f84bb59c6b43b32bc95f2f32371da634e8823ca7f12fcc49da04a488f36dd96c049030ccfd8b8ccc877fd0e6cffb5e4b058031fa15e5a2a3c0e622efe5085dfb4d7dc58d3583063cbd0cbe21b218270ca2da5bb3987f75155b48b69a2419cccb80c2915fab0d4bd1b02e7d0b3032aa842c820"
+}

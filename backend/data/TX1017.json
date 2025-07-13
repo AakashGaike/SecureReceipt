@@ -1,0 +1,20 @@
+{
+  "receipt_id": "TX1017",
+  "store_id": "1233",
+  "items": [
+    {
+      "name": "Egg",
+      "quantity": 2,
+      "price": 25
+    },
+    {
+      "name": "Bread",
+      "quantity": 1,
+      "price": 50
+    }
+  ],
+  "total_amount": 100,
+  "timestamp": "2025-07-12T12:24",
+  "hash": "fd6fb93330f7d9c8b4ca13f7229148772534fbce732c70b16b9e72424a056103",
+  "signature": "e2b120c69a7fb408b914d8f378134fd054c265abc9adf6bb8ce5dd01a5a232a81fd9526fe1cc68b2591dedb87b62455a49b94a92a5dcadbb977495bda0a50e2a907d59e6abc657d84816e9e00669c4e930e754b1b15ff209bf714dcf633bd7ced6141e8b0ad9a493a5df85ae2383f150020affeeab1917457f21b445535974df86cfdf5cfcaaa99e55dd0d1f2dc84b5e2f588e37ffae419c64f38d5e55b57fea412e0236898168bed9036d152176fdfca89914d89a7f9faf965deedf1958c3e27077c2d343ed2c85fe7d64d8f8c63935133fa885bc01eb7f74e51782df5b6226984b6f2061569fa1e528746f1a53a4440952ccf0c2e1115148fcff176445bc96"
+}
