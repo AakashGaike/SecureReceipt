@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { CheckCircle, Copy, Download, ArrowRight, Shield, Hash, Key, QrCode, Clock, Sparkles } from 'lucide-react';
+import { Download, QrCode } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '../components/ToastProvider';
 import AnimatedCard from '../components/AnimatedCard';
@@ -17,9 +17,12 @@ const SuccessPage: React.FC = () => {
     ? `${window.location.origin}/verify/${receiptData.receipt_id}`
     : '';
 
+  const toastShownRef = React.useRef(false);
+
   useEffect(() => {
-    if (receiptData?.receipt_id) {
+    if (receiptData?.receipt_id && !toastShownRef.current) {
       showToast('Receipt generated and secured on blockchain!', 'success');
+      toastShownRef.current = true;
     }
   }, [showToast, receiptData]);
 
@@ -65,13 +68,13 @@ const SuccessPage: React.FC = () => {
             </motion.div>
             QR Code
           </h2>
-          <motion.div 
+          <motion.div
             className="flex flex-col items-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.8 }}
           >
-            <motion.div 
+            <motion.div
               className="bg-white p-6 rounded-2xl mb-6 shadow-2xl relative overflow-hidden"
               whileHover={{ scale: 1.05, rotateY: 5, rotateX: 5 }}
               style={{
@@ -81,12 +84,20 @@ const SuccessPage: React.FC = () => {
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-2xl" />
               <div className="w-48 h-48 bg-white rounded-xl flex items-center justify-center relative">
-                <QRCodeCanvas id="receipt-qr" value={verifyUrl} size={192} />
+                <QRCodeCanvas
+                  id="receipt-qr"
+                  value={verifyUrl}
+                  size={200}
+                  bgColor={"#ffffff"}
+                  fgColor={"#000000"}
+                  level={"H"}
+                  includeMargin={true}
+                />
               </div>
             </motion.div>
 
             {/* ✅ Download QR Button */}
-            <motion.button 
+            <motion.button
               onClick={downloadQRCode}
               whileHover={{ scale: 1.05, rotateX: 5 }}
               whileTap={{ scale: 0.95 }}

@@ -1,5 +1,8 @@
 import time
 import hashlib
+import json
+import os
+from database import blockchain_collection
 
 class Block:
     def __init__(self, index, timestamp, data, previous_hash):
@@ -15,7 +18,7 @@ class Block:
 
 class SimpleBlockchain:
     def __init__(self):
-        self.chain = [self.create_genesis_block()]
+        self.chain = self.load_chain()
 
     def create_genesis_block(self):
         return Block(0, time.time(), "Genesis Block", "0")
@@ -32,6 +35,7 @@ class SimpleBlockchain:
             previous_hash=prev_block.hash
         )
         self.chain.append(new_block)
+        self._save_block(new_block)
         return new_block
 
     def is_chain_valid(self):
@@ -43,4 +47,41 @@ class SimpleBlockchain:
             if curr.previous_hash != prev.hash:
                 return False
         return True
+
+    def is_hash_in_chain(self, hash_val):
+        for block in self.chain:
+            if block.data == hash_val:
+                return True
+        return False
+
+    def _save_block(self, block):
+        block_data = {
+            "index": block.index,
+            "timestamp": block.timestamp,
+            "data": block.data,
+            "previous_hash": block.previous_hash,
+            "hash": block.hash
+        }
+        blockchain_collection.insert_one(block_data)
+
+    def load_chain(self):
+        # Load from MongoDB, sorted by index
+        db_chain = list(blockchain_collection.find({}, {"_id": 0}).sort("index", 1))
+        
+        if not db_chain:
+            genesis = self.create_genesis_block()
+            self._save_block(genesis)
+            return [genesis]
+        
+        chain = []
+        for item in db_chain:
+            block = Block(
+                item["index"],
+                item["timestamp"],
+                item["data"],
+                item["previous_hash"]
+            )
+            block.hash = item["hash"]
+            chain.append(block)
+        return chain
 

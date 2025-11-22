@@ -6,21 +6,13 @@ interface FloatingIconProps {
   className?: string;
   delay?: number;
 }
-
 const FloatingIcon: React.FC<FloatingIconProps> = ({ children, className = '', delay = 0 }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0, rotateZ: -180 }}
       animate={{ opacity: 1, scale: 1, rotateZ: 0 }}
-      transition={{ 
-        duration: 1,
-        delay,
-        type: "spring",
-        stiffness: 200,
-        damping: 15
-      }}
-      whileHover={{ 
-        scale: 1.1, 
+      whileHover={{
+        scale: 1.1,
         rotateZ: 10,
         transition: { duration: 0.3 }
       }}
@@ -29,6 +21,11 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({ children, className = '', d
         rotateZ: [0, 5, -5, 0]
       }}
       transition={{
+        duration: 1,
+        delay,
+        type: "spring",
+        stiffness: 200,
+        damping: 15,
         y: {
           duration: 3,
           repeat: Infinity,

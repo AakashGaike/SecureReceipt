@@ -5,6 +5,7 @@ import { Plus, Minus, Shield, ArrowLeft, Receipt, Store, Clock, DollarSign, Pack
 import { motion } from 'framer-motion';
 import AnimatedCard from '../components/AnimatedCard';
 import FloatingIcon from '../components/FloatingIcon';
+import { API_URL } from '../config';
 
 interface ReceiptItem {
   name: string;
@@ -16,8 +17,8 @@ const GenerateReceiptPage: React.FC = () => {
   const [formData, setFormData] = useState({
     receipt_id: '',
     store_id: '',
-    timestamp: '',
-    total_amount: 0,
+    timestamp: new Date().toISOString().slice(0, 16),
+    total_amount: 0 as number | string,
   });
 
   const [items, setItems] = useState<ReceiptItem[]>([
@@ -47,7 +48,7 @@ const GenerateReceiptPage: React.FC = () => {
     e.preventDefault();
 
     const calculatedTotal = items.reduce((sum, item) => sum + item.quantity * item.price, 0);
-    if (Math.round(calculatedTotal * 100) / 100 !== Math.round(formData.total_amount * 100) / 100) {
+    if (Math.round(calculatedTotal * 100) / 100 !== Math.round(Number(formData.total_amount) * 100) / 100) {
       alert('⚠️ Total amount does not match sum of item prices. Please check again.');
       return;
     }
@@ -61,19 +62,19 @@ const GenerateReceiptPage: React.FC = () => {
     };
 
     try {
-      const res = await axios.post('http://localhost:5000/api/generate', receiptPayload);
+      const res = await axios.post(`${API_URL}/generate`, receiptPayload);
       console.log('✅ Receipt generated:', res.data);
-      navigate('/success',{
-      state: {
-	    receipt_id: formData.receipt_id,
-	    store_id: formData.store_id,
-	    timestamp: formData.timestamp,
-	    total_amount: formData.total_amount,
-	    hash: res.data.hash,
-	    signature: res.data.signature,
-	    showToast: true
-  }
-});
+      navigate('/success', {
+        state: {
+          receipt_id: formData.receipt_id,
+          store_id: formData.store_id,
+          timestamp: formData.timestamp,
+          total_amount: formData.total_amount,
+          hash: res.data.hash,
+          signature: res.data.signature,
+          showToast: true
+        }
+      });
     } catch (err: any) {
       console.error('❌ Error generating receipt:', err);
       alert(err.response?.data?.error || 'Server error.');
@@ -84,20 +85,20 @@ const GenerateReceiptPage: React.FC = () => {
     <div className="min-h-screen p-4 py-8">
       <div className="max-w-5xl mx-auto">
         {/* Enhanced Header */}
-        <motion.div 
+        <motion.div
           className="mb-12"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <Link 
+          <Link
             to="/"
             className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors mb-6 text-lg font-medium group"
           >
             <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
             Back to Home
           </Link>
-          
+
           <div className="flex items-center gap-6">
             <FloatingIcon className="w-16 h-16">
               <Shield className="w-8 h-8" />
@@ -139,7 +140,7 @@ const GenerateReceiptPage: React.FC = () => {
                   <Receipt className="w-6 h-6 text-blue-400" />
                 </motion.div>
               </h2>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 {[
                   { label: 'Receipt ID', name: 'receipt_id', type: 'text', placeholder: 'Enter receipt ID', icon: Receipt },
@@ -166,8 +167,8 @@ const GenerateReceiptPage: React.FC = () => {
                           step={field.step}
                           value={formData[field.name as keyof typeof formData]}
                           onChange={(e) =>
-  setFormData({ ...formData, [field.name]: field.name === 'total_amount' ? parseFloat(e.target.value) || 0 : e.target.value })
-}
+                            setFormData({ ...formData, [field.name]: field.name === 'total_amount' ? (e.target.value === '' ? '' : parseFloat(e.target.value)) : e.target.value })
+                          }
 
                           className="w-full bg-white/10 border-2 border-white/20 rounded-xl px-6 py-4 pl-12 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 backdrop-blur-sm"
                           placeholder={field.placeholder}
@@ -223,7 +224,7 @@ const GenerateReceiptPage: React.FC = () => {
                   </div>
                 </motion.button>
               </div>
-              
+
               <div className="space-y-6">
                 {items.map((item, index) => (
                   <motion.div
@@ -234,7 +235,7 @@ const GenerateReceiptPage: React.FC = () => {
                     className="bg-white/5 rounded-xl p-6 border border-white/10 backdrop-blur-sm relative overflow-hidden"
                   >
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400" />
-                    
+
                     <div className="grid md:grid-cols-4 gap-4">
                       <div className="md:col-span-2">
                         <label className="block text-gray-300 text-sm font-semibold mb-3 uppercase tracking-wider flex items-center gap-2">
@@ -250,7 +251,7 @@ const GenerateReceiptPage: React.FC = () => {
                           required
                         />
                       </div>
-                      
+
                       <div>
                         <label className="block text-gray-300 text-sm font-semibold mb-3 uppercase tracking-wider flex items-center gap-2">
                           <Hash className="w-4 h-4 text-cyan-400" />
@@ -265,7 +266,7 @@ const GenerateReceiptPage: React.FC = () => {
                           required
                         />
                       </div>
-                      
+
                       <div className="flex gap-3">
                         <div className="flex-1">
                           <label className="block text-gray-300 text-sm font-semibold mb-3 uppercase tracking-wider flex items-center gap-2">
@@ -282,7 +283,7 @@ const GenerateReceiptPage: React.FC = () => {
                             required
                           />
                         </div>
-                        
+
                         {items.length > 1 && (
                           <motion.button
                             type="button"
@@ -303,7 +304,7 @@ const GenerateReceiptPage: React.FC = () => {
           </AnimatedCard>
 
           {/* Enhanced Submit Button */}
-          <motion.div 
+          <motion.div
             className="flex justify-center pt-8"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}

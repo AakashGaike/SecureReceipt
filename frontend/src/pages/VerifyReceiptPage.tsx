@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import jsQR from 'jsqr';
 import { motion } from 'framer-motion';
-import { CheckCircle, AlertCircle, QrCode, Search } from 'lucide-react';
+import { CheckCircle, AlertCircle, QrCode } from 'lucide-react';
 import { useToast } from '../components/ToastProvider';
 import AnimatedCard from '../components/AnimatedCard';
+import { API_URL } from '../config';
 
 const VerifyReceiptPage: React.FC = () => {
   const [receiptId, setReceiptId] = useState('');
@@ -17,7 +18,7 @@ const VerifyReceiptPage: React.FC = () => {
     setLoading(true);
     setVerificationResult(null);
     try {
-      const res = await axios.get(`http://localhost:5000/api/verify/${receiptId}`);
+      const res = await axios.get(`${API_URL}/verify/${receiptId}`);
       setVerificationResult(res.data);
       showToast(res.data.message, res.data.is_valid ? 'success' : 'error');
     } catch (err: any) {
@@ -44,7 +45,15 @@ const VerifyReceiptPage: React.FC = () => {
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const code = jsQR(imageData.data, canvas.width, canvas.height);
           if (code) {
-            setReceiptId(code.data);
+            let scannedId = code.data;
+            // Extract ID if it's a full URL
+            if (scannedId.includes('/verify/')) {
+              const parts = scannedId.split('/verify/');
+              if (parts.length > 1) {
+                scannedId = parts[1];
+              }
+            }
+            setReceiptId(scannedId);
             showToast('QR code scanned successfully!', 'success');
           } else {
             showToast('No QR code detected', 'error');
